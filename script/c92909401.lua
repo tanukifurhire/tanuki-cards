@@ -58,9 +58,7 @@ function s.spfilter2(c,e,tp)
 end
 function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_DECK) and chkc:IsControler(tp) and s.spfilter2(chkc,e,tp) end
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.spfilter2,tp,LOCATION_DECK,0,1,nil,e,tp)
-	end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter2,tp,LOCATION_DECK,0,1,nil,e,tp) end
 end
 function s.spop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
