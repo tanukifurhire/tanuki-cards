@@ -26,7 +26,7 @@ function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
 	--condition
 	return Duel.GetCurrentChain()==0 and tp==Duel.GetTurnPlayer() and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>0
 		and Duel.GetDrawCount(tp)>0 and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil)
-		and s[2+tp]>=1000 and Duel.GetLP(tp)<=3000
+		and s[2+tp]>=1000
 end
 function s.thfilter(c)
 	return c:IsAbleToHand() and c:IsSetCard(0x41A)
