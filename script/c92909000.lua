@@ -20,25 +20,24 @@ function s.initial_effect(c)
 end
 s.listed_series={0x48,0x1908,0x406}
 function s.filter1(c,e,tp)
-	local m=c:GetMetatable(true)
+	local rk=c:GetRank()
 	local pg=aux.GetMustBeMaterialGroup(tp,Group.FromCards(c),tp,nil,nil,REASON_XYZ)
-	return (#pg<=0 or (#pg==1 and pg:IsContains(c))) and c:IsFaceup() and (c:IsSetCard(0x48) or c:IsSetCard(0x406)) and m and (c:GetRank()>0 or c:IsStatus(STATUS_NO_LEVEL))
-		and Duel.IsExistingMatchingCard(s.filter2,tp,LOCATION_EXTRA,0,1,nil,e,tp,c,c:GetRank()+1,m.xyz_number,pg)
+	return (#pg<=0 or (#pg==1 and pg:IsContains(c))) and c:IsRankAbove(4) and c:IsFaceup()
+		and Duel.IsExistingMatchingCard(s.filter2,tp,LOCATION_EXTRA,0,1,nil,e,tp,c,rk+1,pg)
 end
-function s.filter2(c,e,tp,mc,rk,no,pg)
+function s.filter2(c,e,tp,mc,rk,pg)
 	if c.rum_limit and not c.rum_limit(mc,e) then return false end
-	return mc:IsType(TYPE_XYZ,c,SUMMON_TYPE_XYZ,tp) and c:IsRank(rk)
-		and (c:IsSetCard(0x48) or c:IsSetCard(0x406)) and c.xyz_number==no and Duel.GetLocationCountFromEx(tp,tp,mc,c)>0
-		and mc:IsCanBeXyzMaterial(c,tp) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_XYZ,tp,false,false)
+	return mc:IsType(TYPE_XYZ,c,SUMMON_TYPE_XYZ,tp) and c:IsRank(rk) and (c:IsSetCard(0x48) or c:IsSetCard(0x406)) and mc:IsCanBeXyzMaterial(c,tp)
+		and Duel.GetLocationCountFromEx(tp,tp,mc,c)>0 and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_XYZ,tp,false,false)
 end
 function s.costfilter(c)
 	return c:IsSetCard(0x1908) and c:IsAbleToRemoveAsCost() and aux.SpElimFilter(c,true)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_GRAVE+LOCATION_MZONE,0,1,nil) and Duel.CheckLPCost(tp,1000) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_GRAVE,0,1,nil) and Duel.CheckLPCost(tp,1000) end
 	Duel.PayLPCost(tp,1000)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_GRAVE+LOCATION_MZONE,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_GRAVE,0,1,1,nil)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
