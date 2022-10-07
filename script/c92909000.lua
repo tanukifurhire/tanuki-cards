@@ -28,7 +28,7 @@ end
 function s.filter2(c,e,tp,mc,rk,no,pg)
 	if c.rum_limit and not c.rum_limit(mc,e) then return false end
 	return mc:IsType(TYPE_XYZ,c,SUMMON_TYPE_XYZ,tp) and c:IsRank(rk)
-		and c:IsSetCard(0x1048) and c.xyz_number==no and Duel.GetLocationCountFromEx(tp,tp,mc,c)>0
+		and (c:IsSetCard(0x48) or c:IsSetCard(0x406)) and c.xyz_number==no and Duel.GetLocationCountFromEx(tp,tp,mc,c)>0
 		and mc:IsCanBeXyzMaterial(c,tp) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_XYZ,tp,false,false)
 end
 function s.costfilter(c)
