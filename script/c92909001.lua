@@ -66,6 +66,6 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	local ac=Duel.AnnounceCard(tp,table.unpack(s.announce_filter))
 	local tc=Duel.CreateToken(tp,ac)
 	if tc:IsAbleToExtra() then
-		Duel.SendtoExtraP(tc,tp,REASON_EFFECT)
+		Duel.SendtoDeck(tc,tp,REASON_EFFECT)
 	end
 end
