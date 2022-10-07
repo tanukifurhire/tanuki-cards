@@ -16,7 +16,7 @@ function s.initial_effect(c)
 	e2:SetCost(s.cost)
 	e2:SetTarget(s.target)
 	e2:SetOperation(s.activate)
-	c:RegisterEffect(e1)
+	c:RegisterEffect(e2)
 end
 s.listed_series={0x48,0x1908,0x406}
 function s.filter1(c,e,tp)
