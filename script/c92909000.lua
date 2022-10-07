@@ -22,7 +22,7 @@ s.listed_series={0x48,0x1908,0x406}
 function s.filter1(c,e,tp)
 	local rk=c:GetRank()
 	local pg=aux.GetMustBeMaterialGroup(tp,Group.FromCards(c),tp,nil,nil,REASON_XYZ)
-	return (#pg<=0 or (#pg==1 and pg:IsContains(c))) and c:IsRankAbove(4) and c:IsFaceup()
+	return (#pg<=0 or (#pg==1 and pg:IsContains(c))) and c:IsFaceup()
 		and Duel.IsExistingMatchingCard(s.filter2,tp,LOCATION_EXTRA,0,1,nil,e,tp,c,rk+1,pg)
 end
 function s.filter2(c,e,tp,mc,rk,pg)
