@@ -52,7 +52,7 @@ function s.efilter(e,te)
 	return te:GetOwner()~=e:GetOwner()
 end
 function s.imcon(c,e,tp)
-	return Duel.GetTurnCount(1)==1
+	return Duel.GetTurnCount(1)<=1
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return tp==Duel.GetTurnPlayer() and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>0
