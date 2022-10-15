@@ -56,7 +56,7 @@ function s.imcon(c,e,tp)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return tp==Duel.GetTurnPlayer() and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>0
-		and Duel.GetDrawCount(tp)>0
+		and Duel.GetDrawCount(tp)>0 and Duel.GetTurnCount()~=1
 end
 function s.thfilter(c)
 	return c:IsSetCard(0x114) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
