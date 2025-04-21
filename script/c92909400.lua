@@ -101,7 +101,6 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local g=Duel.SelectTarget(tp,nil,tp,0,LOCATION_ONFIELD,count,count,nil)
 	Debug.Message(#g)
-	Debug.Message("Hello World!")
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,count,0,0) 
 end
 
