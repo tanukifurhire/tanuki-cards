@@ -56,11 +56,30 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_GRAVE,0,ft,ft,nil,e,tp,zone)
 		local g2=Duel.SelectMatchingCard(tp,s.spfilter,tp,0,LOCATION_GRAVE,eft,eft,nil,e,tp,enemyzone)
-		if #g>0 then
-			local ct=Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP,zone)
+
+		for tc in aux.Next(g) do
+			Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP,zone)
+			local e1=Effect.CreateEffect(c)
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetCode(EFFECT_DISABLE)
+			e1:SetReset(RESET_EVENT|RESETS_STANDARD)
+			tc:RegisterEffect(e1)
+			local e2=e1:Clone()
+			e2:SetCode(EFFECT_DISABLE_EFFECT)
+			tc:RegisterEffect(e2)
+			Duel.SpecialSummonComplete()
 		end
-		if #g2>0 then
-			local ect=Duel.SpecialSummon(g2,0,tp,1-tp,false,false,POS_FACEUP,enemyzone)
+		for etc in aux.Next(g2) do
+			Duel.SpecialSummonStep(etc,0,tp,1-tp,false,false,POS_FACEUP,enemyzone)
+			local e1=Effect.CreateEffect(c)
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetCode(EFFECT_DISABLE)
+			e1:SetReset(RESET_EVENT|RESETS_STANDARD)
+			etc:RegisterEffect(e1)
+			local e2=e1:Clone()
+			e2:SetCode(EFFECT_DISABLE_EFFECT)
+			etc:RegisterEffect(e2)
+			Duel.SpecialSummonComplete()
 		end
 	end
 end
