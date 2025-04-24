@@ -26,6 +26,7 @@ function s.initial_effect(c)
 end
 
 s.listed_series={0x114}
+s.listed_names={id}
 
 function s.cfilter(c)
 	return c:IsSetCard(0x114) and c:IsType(TYPE_MONSTER) and c:IsAbleToGrave()
@@ -58,7 +59,7 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 
 function s.spfilter(c,e,tp)
-	return c:IsSetCard(0x114) and c:IsType(TYPE_MONSTER)
+	return c:IsSetCard(0x114) and c:IsType(TYPE_MONSTER) and not c:IsCode(id)
 end
 
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
