@@ -60,7 +60,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 			local ct=Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP,zone)
 		end
 		if #g2>0 then
-			local ect=Duel.SpecialSummon(g2,0,tp,tp,false,false,POS_FACEUP,enemyzone)
+			local ect=Duel.SpecialSummon(g2,0,tp,1-tp,false,false,POS_FACEUP,enemyzone)
 		end
 	end
 end
