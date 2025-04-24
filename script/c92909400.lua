@@ -97,7 +97,7 @@ end
 
 function s.descon(e, tp)
 	local c = e:GetHandler()
-	return c:GetLinkedGroup():FilterCount(s.linkfilter, nil)
+	return c:GetLinkedGroup():FilterCount(s.linkfilter, nil) >= 0
 end
 
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
