@@ -104,11 +104,9 @@ end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     local c=e:GetHandler()
     local count=c:GetLinkedGroup():FilterCount(s.linkfilter,nil)
-	Debug.Message(count)
 	if chk==0 then return Duel.IsExistingTarget(nil,tp,0,LOCATION_ONFIELD,1,nil) and Duel.GetMatchingGroupCount(nil,tp,0,LOCATION_ONFIELD,nil)>=count end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local g=Duel.SelectTarget(tp,nil,tp,0,LOCATION_ONFIELD,count,count,nil)
-	Debug.Message(#g)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,count,0,0) 
 end
 
