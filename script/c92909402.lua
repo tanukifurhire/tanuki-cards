@@ -161,7 +161,7 @@ function s.atcon(e,tp,eg,ep,ev,re,r,rp)
 		and e:GetHandler():CanChainAttack(0)
 end
 function s.costfilter(c)
-	return c:IsSetCard(0x114) and c:IsAbleToGraveAsCost() and not c
+	return c:IsSetCard(0x114) and c:IsAbleToGraveAsCost()
 end
 function s.atcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_MZONE,0,1,nil) end
