@@ -38,7 +38,7 @@ function s.sprtg(e,tp,eg,ep,ev,re,r,rp,c)
 	local rg2=Duel.GetMatchingGroup(s.linkfilter,tp,LOCATION_MZONE,0,nil)
 	local g=aux.SelectUnselectGroup(rg,e,tp,1,1,aux.ChkfMMZ(1),1,tp,HINTMSG_TOGRAVE,nil,nil,true)
 	local g2=aux.SelectUnselectGroup(rg2,e,tp,1,1,aux.ChkfMMZ(1),1,tp,HINTMSG_TOGRAVE,nil,nil,true)
-	AddCard(g, g2)
+	g.AddCard(g2)
 	if #g>0 then
 		g:KeepAlive()
 		e:SetLabelObject(g)
