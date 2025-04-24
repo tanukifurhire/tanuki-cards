@@ -96,8 +96,8 @@ function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 end
 
 function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
-	local rt=math.min(2,Duel.GetTargetCount(aux.TRUE,tp,0,LOCATION_ONFIELD,nil))
-	return (rt > 0)
+	e:SetLabel(1)
+	return true
 end
 
 function s.costfilter(c, e, tp)
@@ -106,9 +106,18 @@ end
 
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local rt=Duel.GetTargetCount(aux.TRUE,tp,0,LOCATION_ONFIELD,nil)
+	if chkc then return chkc:IsOnField() and chkc:IsControler(1-tp) end
+
+	if chk==0 then
+		if e:GetLabel()==1 then
+			e:SetLabel(0)
+			return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_MZONE,0,1,nil)
+				and Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil)
+		else return false end
+	end
 
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local cg=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_MZONE,0,1,rt,nil,lg)
+	local cg=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_MZONE,0,1,rt,nil)
 	local count = Duel.SendtoGrave(cg, REASON_COST)
 	
 	if chk==0 then return Duel.IsExistingTarget(nil,tp,0,LOCATION_ONFIELD,1,nil) and Duel.GetMatchingGroupCount(nil,tp,0,LOCATION_ONFIELD,nil)>=count end
