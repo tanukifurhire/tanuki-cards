@@ -35,6 +35,16 @@ function s.initial_effect(c)
 	e3:SetTarget(s.sprtg)
 	e3:SetOperation(s.sprop)
 	c:RegisterEffect(e3)
+	--extra attack
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,0))
+	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e4:SetCode(EVENT_BATTLE_DESTROYING)
+	e4:SetCountLimit(2)
+	e4:SetCondition(s.atcon)
+	e4:SetCost(s.atcost)
+	e4:SetOperation(s.atop)
+	c:RegisterEffect(e4)
 end
 s.listed_series={0x114}
 s.listed_names={66023650}, {id}
@@ -145,4 +155,21 @@ function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=e:GetLabelObject()
 	if not g then return end
 	Duel.SendtoGrave(g,REASON_COST)
+end
+
+function s.atcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetAttacker()==e:GetHandler() and aux.bdcon(e,tp,eg,ep,ev,re,r,rp)
+		and e:GetHandler():CanChainAttack(0)
+end
+function s.costfilter(c)
+	return c:IsSetCard(0x114) and c:IsAbleToGraveAsCost()
+end
+function s.atcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_MZONE,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	local g=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_MZONE,0,1,1,nil)
+	Duel.SendtoGrave(g,REASON_COST)
+end
+function s.atop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.ChainAttack()
 end
