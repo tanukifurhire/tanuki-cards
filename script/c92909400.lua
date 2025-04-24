@@ -34,7 +34,7 @@ function s.initial_effect(c)
 	e4:SetCode(EVENT_FREE_CHAIN)
 	e4:SetRange(LOCATION_MZONE)
 	e4:SetCountLimit(1,{id,2})
-	e4:SetCondition(s.descon)
+	e4:SetCost(s.descost)
 	e4:SetTarget(s.destg)
 	e4:SetOperation(s.desop)
 	c:RegisterEffect(e4)
@@ -95,15 +95,25 @@ function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 	Duel.SendtoGrave(g,REASON_COST)
 end
 
-function s.descon(e, tp)
-	local c = e:GetHandler()
-	local count=c:GetLinkedGroup():FilterCount(s.linkfilter,nil)
-	return (count > 0)
+function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local rt=math.min(2,Duel.GetTargetCount(aux.TRUE,tp,0,LOCATION_ONFIELD,nil))
+	return (rt > 0)
+end
+
+function s.costfilter(c, e, tp)
+	return c:IsSetCard(0x114) and c:IsAbleToGraveAsCost
 end
 
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-    local c=e:GetHandler()
-    local count=c:GetLinkedGroup():FilterCount(s.linkfilter,nil)
+	local rt=Duel.GetTargetCount(aux.TRUE,tp,0,LOCATION_ONFIELD,nil)
+	if rt <= 0 
+		return false 
+	end
+	
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	local cg=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_MZONE,0,1,rt,nil,lg)
+	local count = Duel.SendtoGrave(cg, REASON_COST)
+	
 	if chk==0 then return Duel.IsExistingTarget(nil,tp,0,LOCATION_ONFIELD,1,nil) and Duel.GetMatchingGroupCount(nil,tp,0,LOCATION_ONFIELD,nil)>=count end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local g=Duel.SelectTarget(tp,nil,tp,0,LOCATION_ONFIELD,count,count,nil)
