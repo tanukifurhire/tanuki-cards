@@ -34,7 +34,8 @@ function s.spfilter(c,e,tp,zone)
 end
 
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,e:GetHandler():GetLinkedZone(tp)) or Duel.IsExistingMatchingCard(s.spfilter,tp,0,LOCATION_GRAVE,1,nil,e,tp,e:GetHandler():GetLinkedZone(1-tp)) end
+	local c=e:GetHandler()
+	if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,c:GetLinkedZone(tp)) or Duel.IsExistingMatchingCard(s.spfilter,tp,0,LOCATION_GRAVE,1,nil,e,tp,c:GetLinkedZone(1-tp)) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
 end
 
@@ -43,12 +44,12 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local zone=c:GetLinkedZone(tp)
 	local enemyzone=c:GetLinkedZone(1-tp)
 
-	local zonecount = select(1,c:GetLinkedZone(tp))
-	local ezonecount = select(1,c:GetLinkedZone(1-tp))
-	Debug.Message(zonecount)
-	Debug.Message(ezonecount)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE,tp,LOCATION_REASON_TOFIELD,zone)
 	local eft=Duel.GetLocationCount(1-tp,LOCATION_MZONE,tp,LOCATION_REASON_TOFIELD,enemyzone)
+
+	Debug.Message(ft)
+	Debug.Message(eft)
+
 	if c:IsRelateToEffect(e) and c:IsFaceup() and (zone>0 or enemyzone>0) and (ft>0 or eft>0) then
 		if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 end
 		if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then eft=0 end
@@ -59,7 +60,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 			local ct=Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP,zone)
 		end
 		if #g2>0 then
-			local ct=Duel.SpecialSummon(g2,0,tp,tp,false,false,POS_FACEUP,enemyzone)
+			local ect=Duel.SpecialSummon(g2,0,tp,tp,false,false,POS_FACEUP,enemyzone)
 		end
 	end
 end
