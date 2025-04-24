@@ -101,12 +101,10 @@ function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 
 function s.costfilter(c, e, tp)
-	return c:IsSetCard(0x114) and c:IsAbleToGraveAsCost
+	return c:IsSetCard(0x114) and c:IsAbleToGraveAsCost()
 end
 
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	local rt=Duel.GetTargetCount(aux.TRUE,tp,0,LOCATION_ONFIELD,nil)
-
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local cg=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_MZONE,0,1,rt,nil,lg)
 	local count = Duel.SendtoGrave(cg, REASON_COST)
