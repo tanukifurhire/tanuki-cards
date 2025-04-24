@@ -4,6 +4,16 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
 	Link.AddProcedure(c,nil,2,2,s.lcheck)
+	--spsummon
+	local e2=Effect.CreateEffect(c)
+	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e2:SetProperty(EFFECT_FLAG_DELAY)
+	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e2:SetCondition(function(e) return e:GetHandler():IsLinkSummoned() end)
+	e2:SetTarget(s.sptg)
+	e2:SetOperation(s.spop)
+	c:RegisterEffect(e2)
 	--Special summon procedure
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD)
@@ -19,8 +29,41 @@ end
 s.listed_series={0x114}
 s.listed_names={66023650}, {id}
 
+function s.spfilter(c,e,tp,zone)
+	return c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP,tp,zone)
+end
+
+function s.sptgconfilter(e,tp)
+	return (e:GetHandler():GetLinkedZone(tp) or e:GetHandler():GetLinkedZone(1-tp))
+end
+
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,s.sptgconfilter) and Duel.IsExistingMatchingCard(s.spfilter,tp,0,LOCATION_GRAVE,1,nil,e,tp,s.sptgconfilter) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
+end
+
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local zone=c:GetLinkedZone(tp)
+	local enemyzone=c:GetLinkedZone(1-tp)
+	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE,tp,LOCATION_REASON_TOFIELD,zone)
+	local eft=Duel.GetLocationCount(1-tp,LOCATION_MZONE,tp,LOCATION_REASON_TOFIELD,enemyzone)
+	if c:IsRelateToEffect(e) and c:IsFaceup() and (zone>0 or enemyzone>0) and (ft>0 or eft>0) then
+		if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 and eft=0 end
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+		local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_GRAVE,0,ft,ft,nil,e,tp,zone)
+		local g2=Duel.SelectMatchingCard(tp,s.spfilter,tp,0,LOCATION_GRAVE,eft,eft,nil,e,tp,enemyzone)
+		if #g>0 then
+			local ct=Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP,zone)
+		end
+		if #g2>0 then
+			local ct=Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP,enemyzone)
+		end
+	end
+end
+
 function s.linkfilter(c,e,tp)
-	return c:IsSetCard(0x114) and c:IsFaceup()
+	return c:IsSetCard(0x114) and c:IsFaceup() and not c:IsCode(66023650)
 end
 
 function s.sprfilter(c)
