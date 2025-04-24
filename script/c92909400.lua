@@ -34,6 +34,7 @@ function s.initial_effect(c)
 	e4:SetCode(EVENT_FREE_CHAIN)
 	e4:SetRange(LOCATION_MZONE)
 	e4:SetCountLimit(1,{id,2})
+	e4:SetCondition(s.descon)
 	e4:SetTarget(s.destg)
 	e4:SetOperation(s.desop)
 	c:RegisterEffect(e4)
@@ -93,7 +94,11 @@ function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 	if not g then return end
 	Duel.SendtoGrave(g,REASON_COST)
 end
-    
+
+function s.descon(e, tp)
+	return c:GetLinkedGroup():FilterCount(s.linkfilter, nil)
+end
+
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     local c=e:GetHandler()
     local count=c:GetLinkedGroup():FilterCount(s.linkfilter,nil)
