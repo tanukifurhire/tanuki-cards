@@ -8,6 +8,7 @@ function s.initial_effect(c)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e1:SetCountLimit(1,id)
+	e1:SetCondition(s.condition)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
@@ -30,7 +31,13 @@ function s.cfilter(c)
 	return c:IsSetCard(0x114) and c:IsType(TYPE_MONSTER) and c:IsAbleToGrave()
 end
 
+function s.condition(e, tp, eg)
+	return eg:IsExists(aux.NOT(Card.IsSummonLocation), 1, nil, LOCATION_HAND)
+end
+
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	local tc = eg:GetFirst()
+	if chk==0 then return rp == 1-tp end
 	if chk==0 then return ep~=tp and eg:GetFirst():IsLocation(LOCATION_MZONE) end
 	eg:GetFirst():CreateEffectRelation(e)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,1,0,0)
