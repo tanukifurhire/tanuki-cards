@@ -97,12 +97,13 @@ end
 
 function s.descon(e, tp)
 	local c = e:GetHandler()
-	return c:GetLinkedGroup():FilterCount(s.linkfilter, nil) >= 0
+	return true
 end
 
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     local c=e:GetHandler()
     local count=c:GetLinkedGroup():FilterCount(s.linkfilter,nil)
+	Debug.Message(count)
 	if chk==0 then return Duel.IsExistingTarget(nil,tp,0,LOCATION_ONFIELD,1,nil) and Duel.GetMatchingGroupCount(nil,tp,0,LOCATION_ONFIELD,nil)>=count end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local g=Duel.SelectTarget(tp,nil,tp,0,LOCATION_ONFIELD,count,count,nil)
