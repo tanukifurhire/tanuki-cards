@@ -42,6 +42,8 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local zone=c:GetLinkedZone(tp)
 	local enemyzone=c:GetLinkedZone(1-tp)
+	Debug.Message(zone)
+	Debug.Message(enemyzone)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE,tp,LOCATION_REASON_TOFIELD,zone)
 	local eft=Duel.GetLocationCount(1-tp,LOCATION_MZONE,tp,LOCATION_REASON_TOFIELD,enemyzone)
 	if c:IsRelateToEffect(e) and c:IsFaceup() and (zone>0 or enemyzone>0) and (ft>0 or eft>0) then
