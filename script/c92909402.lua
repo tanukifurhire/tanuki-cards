@@ -20,7 +20,7 @@ s.listed_series={0x114}
 s.listed_names={66023650}, {id}
 
 function s.linkfilter(c,e,tp)
-	return c:IsSetCard(0x114) and c:IsFaceup
+	return c:IsSetCard(0x114) and c:IsFaceup()
 end
 
 function s.sprfilter(c)
