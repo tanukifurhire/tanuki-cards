@@ -96,6 +96,7 @@ function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 end
 
 function s.descon(e, tp)
+	local c = e:GetHandler()
 	return c:GetLinkedGroup():FilterCount(s.linkfilter, nil)
 end
 
