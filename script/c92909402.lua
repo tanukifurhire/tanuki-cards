@@ -47,7 +47,13 @@ function s.initial_effect(c)
 end
 s.listed_series={0x114}
 s.listed_names={66023650}, {id}
+function s.lcheck(g,lc,sumtype,tp)
+	for tc in aux.Next(g) do
+		if not tc:IsSetCard(0x114) return false end
+	end
 
+	return true
+end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local bc=c:GetBattleTarget()
